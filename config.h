@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#define TAG(x)  (1 << (x-1))
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
 static const char normbordercolor[] = "#444444";
@@ -22,10 +24,11 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class        instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",       NULL,       NULL,       0,            True,        -1 },
-	{ "Iceweasel",  NULL,       NULL,       1 << 2,       False,       0 },
-        { "Eclipse",    NULL,       NULL,       1 << 6,       False,       1 },
-        { "Icedove",    NULL,       NULL,       1 << 8,       False,       0 },
+	{ "Gimp",       NULL,       NULL,       0,            False,      -1 },
+	{ "Evince",     NULL,       NULL,       TAG(2),       False,       0 },
+	{ "Iceweasel",  NULL,       NULL,       TAG(3),       False,       0 },
+	{ "Eclipse",    NULL,       NULL,       TAG(7),       False,       1 },
+	{ "Icedove",    NULL,       NULL,       TAG(8),       False,       0 },
 };
 
 /* layout(s) */
@@ -68,8 +71,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_c,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_r,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_y,    view,           {0} },
+	{ MODKEY,                       XK_n,      zoom,           {0} },
+	{ MODKEY,                       XK_y,      view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_z,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[1]} },
