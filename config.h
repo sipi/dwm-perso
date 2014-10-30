@@ -24,11 +24,12 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class        instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",       NULL,       NULL,       0,            False,      -1 },
+	{ "Gimp",       NULL,       NULL,       0,            False,       0 },
 	{ "Evince",     NULL,       NULL,       TAG(2),       False,       0 },
 	{ "Iceweasel",  NULL,       NULL,       TAG(3),       False,       0 },
-	{ "Eclipse",    NULL,       NULL,       TAG(7),       False,       1 },
+	{ "Eclipse",    NULL,       NULL,       TAG(7),       False,       0 },
 	{ "Icedove",    NULL,       NULL,       TAG(8),       False,       0 },
+	{ "Emacs",      NULL,       NULL,       TAG(9),       False,       0 },
 };
 
 /* layout(s) */
@@ -61,13 +62,16 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
+static const char *xkbbepocmd[] = { "setxkbmap", "fr", "bepo", NULL };
+static const char *xkbfrcmd[] = { "setxkbmap", "fr", NULL };
 
 #include "keepfloatingposition.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_b,      spawn,          {.v = xkbfrcmd } },
+	{ MODKEY,                       XK_a,      spawn,          {.v = xkbbepocmd} },
 	{ MODKEY,                       XK_t,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_s,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -83,12 +87,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[3]} }, // hstack
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_Tab,    view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_Tab,    focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_Tab,    tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	TAGKEYS(                        0x22,                      0)
 	TAGKEYS(                        0xab,                      1)
 	TAGKEYS(                        0xbb,                      2)
